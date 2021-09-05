@@ -21,20 +21,20 @@ def max_multiples(multiplies: int, first: tuple or list, second: tuple or list) 
 
             local_1 = first[i] + element
             index_1 = local_1 % multiplies
-            if local_1 > information[index_1]:
+            if local_1 > new[index_1]:
                 new[index_1] = local_1
 
             local_2 = second[i] + element
             index_2 = local_2 % multiplies
-            if local_2 > information[index_2]:
+            if local_2 > new[index_2]:
                 new[index_2] = local_2
 
         information = new
-    print(information)
+        print('--------', information)
     return information[0]
 
-first  = [1, 3, 7, 11,41, 4]
-second = [2, 4, 11, 22, 48, 11]
-d = 3
+first  = [3, 2, 9, 7, 2, 9, 100, 12, 9, 12, 12, 17]
+second = [7, 8, 1, 2, 2, 12, 200, 48, 13, 44, 15, 18]
+d = 10
 print(max_multiples(d, first, second))
 
