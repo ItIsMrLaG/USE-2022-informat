@@ -12,6 +12,7 @@
 
 <https://www.youtube.com/watch?v=qscUDmueDZs> - видео урок
 """
+from time import time
 
 def max_multiples(multiplies: int, first: tuple or list, second: tuple or list) -> int:
     information = [0] * multiplies
@@ -30,11 +31,39 @@ def max_multiples(multiplies: int, first: tuple or list, second: tuple or list) 
                 new[index_2] = local_2
 
         information = new
-        print('--------', information)
+        # print('--------', information)
     return information[0]
 
-first  = [3, 2, 9, 7, 2, 9, 100, 12, 9, 12, 12, 17]
-second = [7, 8, 1, 2, 2, 12, 200, 48, 13, 44, 15, 18]
-d = 10
-print(max_multiples(d, first, second))
+def another_variant(multiplies: int, first: tuple or list, second: tuple or list) -> int:
+    m = [0]*multiplies
+    n = len(first)
+    for i in range(n):
+        m_new = [-1000000]*multiplies
 
+        for j in range(multiplies):
+            info = m[j] + first[i]
+            index = info % multiplies
+            if info > m_new[index]:
+                m_new[index] = info
+
+        for j in range(multiplies):
+            info = m[j] + second[i]
+            index = info % multiplies
+            if info > m_new[index]:
+                m_new[index] = info
+
+        for j in range(multiplies):
+            m[j] = m_new[j]
+    return m[0]
+
+first  = [3, 2, 9, 7, 2, 9, 100, 12, 9, 12, 12, 17,]*10000
+second = [7, 8, 1, 2, 2, 12, 200, 48, 13, 44, 15, 18,]*10000
+d = 10
+
+tm = time()
+myAns = max_multiples(d, first, second)
+print(f'{myAns}, myTime - {time() - tm}')
+
+tm = time()
+teacherAns = another_variant(d, first, second)
+print(f'{teacherAns}, teacherTime - {time() - tm}')
