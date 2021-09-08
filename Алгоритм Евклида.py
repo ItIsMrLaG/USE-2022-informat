@@ -111,6 +111,6 @@ def Euq_slow (a, b):
             b = b - a
     return(a + b)
 
-a = 10
-b = 90
+a = 50
+b = 12
 print(Euq_fast(a, b))
