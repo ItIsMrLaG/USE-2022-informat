@@ -8,3 +8,4 @@ print('')
 # №12
 
 print(sum([i*i for i in range(101)]))
+
