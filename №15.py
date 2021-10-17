@@ -16,7 +16,6 @@ maximum = 0
 for a in range(0, 35*k):
     for b in range(a, 35*k):
         A = [a/k, b/k]
-        print(A)
         pofi = True
         for x in range(0, 31):
             if not(func1(x, A)):
