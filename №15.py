@@ -5,7 +5,7 @@
 P = [3, 15]
 Q = [14, 25]
 
-def inside(x, l):
+def inside(x, l):focus
     return (l[0] <= x <= l[1])
 
 def func1(x, A):

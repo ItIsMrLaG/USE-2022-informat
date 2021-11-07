@@ -1,3 +1,4 @@
+from functools  import lru_cache
 # №1
 '''
 Возведение в степень через рекурсию, без использования циклов
@@ -10,7 +11,9 @@ def khm(a, n = 0):
     if n%2 == 0:
         return a*khm(a, n-1)
     if n%2 != 0:
-        return a*khm(a, n//2)*khm(a, n//2)
+        helper = khm(a, n//2)
+        return a*helper**2
+
 
 # №2
 '''
@@ -19,7 +22,6 @@ def khm(a, n = 0):
 2) *2 + 1
 Сколько различных результатов можно получить из исходного числа 1 после выполнения программы, содержащей 9 команд?
 '''
-from functools  import lru_cache
 
 ANS = 0
 
@@ -39,16 +41,33 @@ print(ANS) # 512
 # №3
 '''
 У исполнителя есть команды: 
+1) *2
+2) *2 + 1
+Сколько существует программ, для которых при исходном числе 1 результатом является число 41?
+'''
+def func6(first, second):
+    if first == second:
+        return 1
+    elif first > second:
+        return 0
+    else:
+        return func6(first * 3, second) + func6(first + 2, second)
+
+print(func6(1, 41))
+
+
+# №4
+'''
+У исполнителя есть команды: 
 1) +1
 2) +4
 3) *4
 Сколько существует программ, для которых при исходном числе 3 результатом является число 27 и при этом троектория 
 содержит число 11?
 '''
-from functools  import lru_cache
-
+# -----v1-----
 @lru_cache(None)
-def func7(n=3, first=27, flag = False):
+def func7(n=3, first=27, flag=False):
     Flag1, Flag2, Flag3 = flag, flag, flag
     if n < first:
         if (n + 1) == 11:
@@ -65,6 +84,19 @@ def func7(n=3, first=27, flag = False):
 
 print(func7(3, 27)) #665
 
+# -----v2-----
+def func8(n=3, first=27, flag=False):
+    Flag = flag
+    if n == 11:
+        Flag = True
+    if n == first and Flag:
+        return 1
+    elif n < first:
+        return func8(n + 1, first, Flag) + func8(n + 4, first, Flag) + func8(n*4, first, Flag)
+    else:
+        return 0
+
+print(func8(3, 27)) #665
 
 # Здесь показана фишка задания сверху
 # s = set()
@@ -76,3 +108,4 @@ print(func7(3, 27)) #665
 #         l.append(eval(n))
 # print(*l)
 # print(*s)
+
