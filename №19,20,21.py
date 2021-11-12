@@ -46,7 +46,9 @@ def moves(begin):
 
 @lru_cache(None)
 def game(start):
-    if any((sum(x)>=47) for x in moves(start)):
+    if (sum(start)>=47):
+        return 'END'
+    if any(game(x)=='END' for x in moves(start)):
         return 'P1'
     if all((game(x)=='P1') for x in moves(start)):  # поставив вместо all - any, мы выбираем для Пети, самый лоховской ход (для №19)
         return 'V1'
@@ -56,7 +58,7 @@ def game(start):
         return 'V2'
 
 
-for i in range(1, 37):
+for i in range(1, 38):
     s = (10, i)
     print(s, game(s))
 
