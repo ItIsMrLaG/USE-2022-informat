@@ -37,6 +37,9 @@ V2 - позиция, из которой любой ход игрока буде
 — у Вани нет стратегии, которая позволит ему гарантированно выиграть первым ходом.
 '''
 
+# https://docs.google.com/spreadsheets/d/1ygwQlcqpPnWLApP3NFZbvRQfQdatGFHBce-Qs8iVcrc/edit#gid=0 - пример эксель
+
+
 from functools import lru_cache
 
 def moves(begin):
