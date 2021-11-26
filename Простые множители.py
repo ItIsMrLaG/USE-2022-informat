@@ -10,3 +10,4 @@ def finder_prime(n):
             return [*finder_prime(n//de)] + [*finder_prime(de)]
     if len(l) == 1:
         return [n]
+print(finder_prime(277))
