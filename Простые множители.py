@@ -10,4 +10,8 @@ def finder_prime(n):
             return [*finder_prime(n//de)] + [*finder_prime(de)]
     if len(l) == 1:
         return [n]
-print(finder_prime(277))
+print(finder_prime(int(input())))
+
+# Функция для подсчета всех делителей
+def finder(n):
+    return sum([(n%x == 0) for x in range(1, int(n**0.5))])*2 + (int(n**0.5) == n**0.5)
