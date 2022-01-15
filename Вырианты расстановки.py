@@ -1,4 +1,3 @@
-
 from itertools import combinations
 
 def matrixPrinter(n, full: list, mean='*', splitter=' ', space = '#'): # n = len side of the matrix, давать отсортированный список
