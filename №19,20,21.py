@@ -42,29 +42,51 @@ V2 - позиция, из которой любой ход игрока буде
 
 from functools import lru_cache
 
+
 def moves(begin):
     a, b = begin
     # print((a + 1, b + 2), (a + 2, b + 1), (a*2, b), (a, b*2))
-    return (a + 1, b + 2), (a + 2, b + 1), (a*2, b), (a, b*2)
+    return (a + 1, b + 2), (a + 2, b + 1), (a * 2, b), (a, b * 2)
+
 
 @lru_cache(None)
 def game(start):
-    if (sum(start)>=47):
+    if (sum(start) >= 47):
         return 'END'
-    if any(game(x)=='END' for x in moves(start)):
+    if any(game(x) == 'END' for x in moves(start)):
         return 'P1'
-    if all((game(x)=='P1') for x in moves(start)):  # поставив вместо all - any, мы выбираем для Пети, самый лоховской ход (для №19)
+    if all((game(x) == 'P1') for x in
+           moves(start)):  # поставив вместо all - any, мы выбираем для Пети, самый лоховской ход (для №19)
         return 'V1'
-    if any((game(x)=='V1') for x in moves(start)):
+    if any((game(x) == 'V1') for x in moves(start)):
         return 'P2'
-    if all((game(x)=='P2' or game(x)=='P1') for x in moves(start)):
+    if all((game(x) == 'P2' or game(x) == 'P1') for x in moves(start)):
         return 'V2'
 
 
 for i in range(1, 38):
     s = (10, i)
-    print(s, game(s))
+    print(i, game(s))
 
-# Советы:
-# 1) всегда проверять moves(), отдельно от game() на открытых данных (чтоб не закрабить из-за невнивательности)
 
+### UNIVERSAL-GAME-ALGORITHM
+def new_game(start):
+    if sum(start) >= 47:
+        return 0
+    steps = [new_game(x) for x in moves(start)]
+    if any(path%2 == 0 for path in steps):
+        return 1 + min([el for el in steps if el%2 == 0])
+    else:
+        return 1 + max(steps)
+
+
+def info_game(r=(1, 47), pose1=10):
+    for pose2 in range(*r):
+        ans = new_game((pose1, pose2))
+        if ans != 0:
+            if ans % 2:
+                print(pose2, f'P{(ans + 1) // 2}')
+            else:
+                print(pose2, f'V{ans // 2}')
+
+info_game()
