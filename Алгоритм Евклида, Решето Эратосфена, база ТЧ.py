@@ -143,9 +143,9 @@ def eratosthenes_upgrade(n):     # n - число, до которого хот�
             if i == 2:
                 mult = 2
             else:
-                mult = i - 1
+                mult = i-1
             for j in range(mult*i, len(sieve), i):
                 sieve[j] = 0
     return set(sieve)
 
-print(eratosthenes_upgrade(30))
+print(eratosthenes_upgrade(8063))

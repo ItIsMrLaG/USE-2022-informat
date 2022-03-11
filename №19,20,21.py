@@ -41,6 +41,8 @@ V2 - позиция, из которой любой ход игрока буде
 
 
 from functools import lru_cache
+import sys
+sys.setrecursionlimit(10000)  # - повышение глубины рекурсии
 
 
 def moves(begin):
@@ -90,3 +92,35 @@ def info_game(r=(1, 47), pose1=10):
                 print(pose2, f'V{ans // 2}')
 
 info_game()
+
+
+### UMINSHENIE
+
+def moves(n):
+    a, b = n
+    ans = []
+    if a > 0:
+        ans.append((a-1, b))
+    if b > 0:
+        ans.append((a, b-1))
+    if a > 1:
+        ans.append((a//2 + a%2, b))
+    if b > 1:
+        ans.append((a, b//2 + b%2))
+    return  tuple(ans)
+
+@lru_cache(None)
+def game(n):
+    if sum(n) <= 32:
+        return 'END'
+    if any([game(x) == 'END' for x in moves(n)]):
+        return 'P1'
+    if all([game(x) == 'P1' for x in moves(n)]):
+        return 'V1'
+    if any([game(x) == 'V1' for x in moves(n)]):
+        return 'P2'
+    if all([(game(x) == 'P1') or (game(x) == 'P2') for x in moves(n)]):
+        return 'V2'
+    return '-'
+for s in range(23, 100):
+    print(s, game((10, s)))

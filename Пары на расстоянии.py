@@ -107,3 +107,27 @@ def counter(my_file, line_len, case):
 
 f = '/home/gora/PycharmProjects/USE-2022-informat/USE-2022-informat/test_sets/1-27-hard-26.11.txt'
 print(counter(f, 8, 50))
+
+###################################################################################################3
+
+# О - ОПТИМИЗАЦИЯ
+
+def IA_UMNIY(file):
+    with open(file, 'r') as f:
+        dlin = int(f.readline())
+        meta = [[[0]*15 for y in range(7)] for x in range(2)] # [0] - <=50; [1] > 50;
+        line = [int(f.readline()) for i in range(7)]
+        ans = 0
+        for i in range(dlin - 7):
+            num = int(f.readline())
+            ind = (7 - num % 7) % 7
+            ans += sum([meta[1][ind][x] + meta[0][ind][x]*(num > 50) for x in range(15) if (num*x)%15 != 0])
+
+            new = i%7
+            hm = line[new]
+            meta[hm > 50][hm%7][hm%15] += 1
+            line[new] = num
+        return ans
+
+f = '/home/gora/PycharmProjects/USE-2022-informat/USE-2022-informat/test_sets/1-27-hard-26.11.txt'
+print(IA_UMNIY(f))
