@@ -124,3 +124,4 @@ def game(n):
     return '-'
 for s in range(23, 100):
     print(s, game((10, s)))
+'l'.s
