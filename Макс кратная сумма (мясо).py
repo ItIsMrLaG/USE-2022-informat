@@ -41,8 +41,9 @@ def proga(f=r'/home/gora/PycharmProjects/USE-2022-informat/USE-2022-informat/tes
     with open(f, 'r') as f:
         dlin = int(f.readline())
         info = []
-        meta11 = [0] * 11
-        meta8 = [0] * 8
+        meta11 = [-10000000] * 11
+        meta8 = [-10000000] * 8
+        meta8[0], meta11[0] = 0, 0
         for i in range(dlin):
             # преобразование входных данных в двумерный массив (строки[НОКИ])
             helper = list(map(int, f.readline().strip().split()))[1:]
