@@ -23,39 +23,38 @@ def optima(f: str = r"/home/gora/PycharmProjects/USE-2022-informat/USE-2022-info
     file = f
     '''
     Идея:
-        Поставить завод в рандомное место, высчитать для этого места стоимость (sigma0), а потом пересчитывать 
-    новую sigma для нового места, опираясь на старую sigma0 и префиксные суммы (посчитанные заранее)  
+        Поставить завод в рандомное место, высчитать для этого места стоимость (sigma[0]), а потом пересчитывать 
+    новую sigma для нового места, опираясь на старую sigma[0] и префиксные суммы (посчитанные заранее)  
     '''
     with open(file, 'r') as f:
         dlin = len(f.readlines())
         f.seek(0)
-        info = []
-        meta, ans = 10000000000000000, 0
         P = []
-        sigma = 0
-        helper_s = 0
+        sigma = [0]
+        info = []
+        All = 0
+        z = dlin // 2
+        ans, cost = 0, 1000000000000000000000000000
         for i in range(dlin):
             num = int(f.readline())
-            helper_s += num
-            P.append(helper_s)
-            if i <= dlin // 2:
-                sigma += num * i
-            else:
-                sigma += num * (dlin - i)
+            All += num
+            P.append(All)
             info.append(num)
+            if i > z:
+                sigma[0] += num * (z - i % z)
+            else:
+                sigma[0] += num * i
 
-        ind = dlin // 2
-        for i in range(dlin):
-            k = P[ind % dlin] - P[i]
-
-            if k == 0:
-                print('HA LOX, DUMAI KAK PEREDELAT')
-
-            sigma = sigma + P[-1] * (k // abs(k))
-            if meta > sigma:
-                meta = sigma
+        t = z
+        for i in range(1, dlin):
+            dop = P[t % dlin] - P[(t - z) % dlin]
+            x = dop // abs(dop)
+            si = sigma[-1] + x * All - 2 * (dop)
+            sigma.append(si)
+            if si < cost:
+                cost = si
                 ans = i
-            ind += 1
-        return info[ans]
+            t += 1
+        return ans + 1, info[ans], cost
 
-print(optima())
+print(optima('/home/gora/PycharmProjects/USE-2022-informat/USE-2022-informat/test_sets/tester.txt'))
