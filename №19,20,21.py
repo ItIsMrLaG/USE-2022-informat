@@ -42,6 +42,7 @@ V2 - позиция, из которой любой ход игрока буде
 
 from functools import lru_cache
 import sys
+
 sys.setrecursionlimit(10000)  # - повышение глубины рекурсии
 
 
@@ -76,8 +77,8 @@ def new_game(start):
     if sum(start) >= 47:
         return 0
     steps = [new_game(x) for x in moves(start)]
-    if any(path%2 == 0 for path in steps):
-        return 1 + min([el for el in steps if el%2 == 0])
+    if any(path % 2 == 0 for path in steps):
+        return 1 + min([el for el in steps if el % 2 == 0])
     else:
         return 1 + max(steps)
 
@@ -91,6 +92,7 @@ def info_game(r=(1, 47), pose1=10):
             else:
                 print(pose2, f'V{ans // 2}')
 
+
 info_game()
 
 
@@ -100,14 +102,15 @@ def moves(n):
     a, b = n
     ans = []
     if a > 0:
-        ans.append((a-1, b))
+        ans.append((a - 1, b))
     if b > 0:
-        ans.append((a, b-1))
+        ans.append((a, b - 1))
     if a > 1:
-        ans.append((a//2 + a%2, b))
+        ans.append((a // 2 + a % 2, b))
     if b > 1:
-        ans.append((a, b//2 + b%2))
-    return  tuple(ans)
+        ans.append((a, b // 2 + b % 2))
+    return tuple(ans)
+
 
 @lru_cache(None)
 def game(n):
@@ -122,6 +125,84 @@ def game(n):
     if all([(game(x) == 'P1') or (game(x) == 'P2') for x in moves(n)]):
         return 'V2'
     return '-'
+
+
 for s in range(23, 100):
     print(s, game((10, s)))
-'l'.s
+
+
+### HAAARD
+"""Два игрока, Петя и Ваня, играют в следующую игру. Перед игроками лежит
+куча камней. Игроки ходят по очереди, первый ход делает Петя. За один ход
+игрок может добавить в кучу один камень, добавить два камня или
+увеличить количество камней в куче в два раза. При этом нельзя повторять ход,
+который этот же игрок делал на предыдущем ходу. Повторять чужие ходы и
+свои более старые ходы разрешается.
+Например, если в начале игры в куче 3 камня, Петя может первым ходом
+получить кучу из 4, 5 или 6 камней. Если Петя получил кучу из 5 камней
+(добавил два камня), то следующим ходом Ваня может получить 6, 7 или
+10 камней. Если Ваня добавил один камень и получил 6 камней, то вторым
+ходом Петя может получить 7 или 12 камней. Получить 8 камней Петя не
+может, так как для этого нужно добавить 2 камня, а Петя делал это на
+предыдущем ходу.
+Чтобы делать ходы, у каждого игрока есть неограниченное количество камней.
+Игра завершается, когда количество камней в куче становится не менее 21.
+Победителем считается игрок, сделавший последний ход, то есть первым
+получивший кучу, в которой будет 21 или больше камне
+№19 - P2
+№20 - V2
+#21 - P3
+"""
+
+def moves(t):
+    n = t[0]
+    previous = t[1]  # 'P' or 'V' (the last step)
+    if previous == 'V':
+        now = 'P'
+    else:
+        now = 'V'
+    last = list(t[2][now == 'V'])  # ['111', '111']
+    ans = []
+
+    if last[0] == '1':
+        h = list(t[2]).copy()
+        h[not (previous == 'V')] = '011'
+        h = tuple(h)
+        ans.append((n + 1, now, h))
+    if last[1] == '1':
+        h = list(t[2]).copy()
+        h[not (previous == 'V')] = '101'
+        h = tuple(h)
+        ans.append((n + 2, now, h))
+    if last[2] == '1':
+        h = list(t[2]).copy()
+        h[not (previous == 'V')] = '110'
+        h = tuple(h)
+        ans.append((n * 2, now, h))
+    return tuple(ans)
+
+
+# начинать всегда с Вани
+
+
+@lru_cache(None)
+def game(n):
+    if n[0] >= 21:
+        return 'END'
+    if any([game(x) == 'END' for x in moves(n)]):
+        return 'P1'
+    if all([game(x) == 'P1' for x in moves(n)]):
+        return 'V1'
+    if any([game(x) == 'V1' for x in moves(n)]):
+        return 'P2'
+    if all([(game(x) == 'P2') or (game(x) == 'P1') for x in moves(n)]):
+        return 'V2'
+    if any([(game(x) == 'V2') or (game(x) == 'V1') for x in moves(n)]):
+        return 'P3'
+    return '-'
+
+
+print(moves((3, 'V', ['111', '111'])))
+
+for s in range(1, 25):
+    print(s, game((s, 'V', ('111', '111'))))

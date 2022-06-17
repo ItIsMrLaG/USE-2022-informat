@@ -109,43 +109,73 @@ a = A * B
 b = B * C
 c = C * A
 """
+
+
 ##################################################################################################################
 
 # @Алгоритм Евклида (нахождение общего НОД для двух чисел)
 
-def Euq_fast (a, b):
+def Euq_fast(a, b):
     while a != 0 and b != 0:
         if a > b:
             a = a % b
         else:
             b = b % a
-    return(a + b)
+    return (a + b)
 
-def Euq_slow (a, b):
+
+def Euq_slow(a, b):
     while a != 0 and b != 0:
         if a > b:
             a = a - b
         else:
             b = b - a
-    return(a + b)
+    return (a + b)
+
 
 a = 60
 b = 539
 print(Euq_fast(a, b))
 
+
 # @ Решето Эратосфена
 
-def eratosthenes_upgrade(n):     # n - число, до которого хотим найти простые числа
+def eratosthenes_upgrade(n):  # n - число, до которого хотим найти простые числа
     sieve = list(range(n + 1))
-    sieve[1] = 0    # без этой строки итоговый список будет содержать единицу
+    sieve[1] = 0  # без этой строки итоговый список будет содержать единицу
     for i in sieve:
         if i > 1:
             if i == 2:
                 mult = 2
             else:
-                mult = i-1
-            for j in range(mult*i, len(sieve), i):
+                mult = i - 1
+            for j in range(mult * i, len(sieve), i):
                 sieve[j] = 0
     return set(sieve)
 
+
 print(eratosthenes_upgrade(8063))
+
+
+def eratosthenes_fast(n):
+    resheto = [1] * (n + 1)
+    resheto[0:2] = 0, 0
+    for i in range(2, int(n ** 0.5) + 1):
+        for j in range(i * i, n + 1, i):
+            resheto[j] = 0
+    for i in range(n + 1):
+        if resheto[i]:
+            resheto[i] = i
+    return set(resheto)
+
+
+print(eratosthenes_fast(8063))
+
+
+def eler(n):
+    '''Функция Эйлера (вычисляет количество чисел от 1 до n-1, которые вместе с n взаимнопростые)'''
+    counter = 0
+    for i in range(1, n):
+        if Euq_fast(n, i) == 1:
+            counter += 1
+    return counter
