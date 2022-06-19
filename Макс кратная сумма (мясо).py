@@ -27,6 +27,8 @@
 для четвёртой группы — 6,21,24,24,42,56.
 Значением искомой суммы должно быть число 152 (24+ 56+ 30+ 42).
 """
+
+
 def euq(t):
     a, b = t
     while max(a, b) % min(a, b) != 0:
@@ -72,4 +74,72 @@ def proga(f=r'/home/gora/PycharmProjects/USE-2022-informat/USE-2022-informat/tes
         ans = max(meta8[0], meta11[0])
     return ans
 
+
 print(proga())
+
+'''
+Имеется набор данных, состоящий из троек положительных целых чисел. 
+Необходимо выбрать из каждой тройки ровно два числа так, 
+чтобы сумма всех выбранных чисел оканчивалась либо на 3   
+в семеричной записи, либо на 5   
+в десятичной записи, но не оканчивалась на 3   
+в семеричной записи и на 5   
+в десятичной записи одновременно, и при этом была максимально возможной. 
+Гарантируется, что искомую сумму получить можно.
+
+Пример входного файла:
+5
+30 40 33 
+22 28 38 
+25 17 3 
+35 9 14 
+10 33 1
+
+Ответ для данного примера: 265  
+'''
+
+
+def effect(fl='/home/gora/PycharmProjects/USE-2022-informat/USE-2022-informat/test_sets/tester.txt'):
+    def translator(n, mult):
+        t = n
+        s = ''
+        while t > 0:
+            s = str(t % mult) + s
+            t = t // mult
+        return s
+
+    with open(fl, 'r') as f:
+        dlin = int(f.readline())
+        ans = -100000000000000000000000
+        meta7 = [0] * 7
+        meta10 = [0] * 10
+        for i in range(dlin):
+            new = list(map(int, f.readline().strip().split()))
+            helper7 = [-100000000000] * 7
+            helper10 = [-100000000000] * 10
+            for a in range(7):
+                for el in new:
+                    s = meta7[a] + sum(new) - el
+                    if s < 0:
+                        continue
+                    s_i = int(translator(s, 7)[-1])
+                    if helper7[s_i] < s:
+                        helper7[s_i] = s
+            meta7 = helper7
+
+            for a in range(10):
+                for el in new:
+                    s = meta10[a] + sum(new) - el
+                    s_i = int(s % 10)
+                    if helper10[s_i] < s:
+                        helper10[s_i] = s
+            meta10 = helper10
+
+    if (ans < meta10[5]) and (meta10[5] != meta7[3]):
+        ans = meta10[5]
+    if (ans < meta7[3]) and (meta10[5] != meta7[3]):
+        ans = meta7[3]
+    return ans
+
+
+print(effect())
