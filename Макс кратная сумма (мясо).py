@@ -135,11 +135,12 @@ def effect(fl='/home/gora/PycharmProjects/USE-2022-informat/USE-2022-informat/te
                         helper10[s_i] = s
             meta10 = helper10
 
-    if (ans < meta10[5]) and (meta10[5] != meta7[3]):
-        ans = meta10[5]
-    if (ans < meta7[3]) and (meta10[5] != meta7[3]):
-        ans = meta7[3]
-    return ans
+    for el in meta7 + meta10:
+        if (el%10 == 5) and ((translator(el, 7)[-1]) != '3'):
+            ans = max(ans, el)
+        if (el % 10 != 5) and ((translator(el, 7)[-1]) == '3'):
+            ans = max(ans, el)
+    return ans, meta10, meta7
 
 
 print(effect())
